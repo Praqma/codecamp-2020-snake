@@ -19,4 +19,4 @@ $ npm start
 ```
 
 for other commands checkout the scripts sections of the package.json file.
-they can be called using the syntax `npm run <command>`
+they can be called using the syntax `npm run <command>`.
