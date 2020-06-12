@@ -1,17 +1,21 @@
 module Main exposing (..)
 
-import Browser
+import Browser exposing (Document)
 import Color
 import GlobalCSS exposing (globalCSS)
 import Html.Attributes as HtmlAttributes
 import String exposing (lines)
 import TypedSvg exposing (..)
-import TypedSvg.Attributes exposing (..)
+import TypedSvg.Attributes as Attr exposing (..)
 import TypedSvg.Types exposing (Paint(..), px)
 
 
 type alias Model =
-    ()
+    { apple :
+        { x : Float
+        , y : Float
+        }
+    }
 
 
 type alias Msg =
@@ -29,10 +33,16 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init flags =
-    ( (), Cmd.none )
+    ( { apple = { x = 4, y = 1 } }
+    , Cmd.none
+    )
 
 
-view model =
+tileSize =
+    100
+
+
+view { apple } =
     { title = "Hello World!"
     , body =
         [ globalCSS
@@ -44,26 +54,30 @@ view model =
                 "height"
                 "100vh"
             ]
-            [ rect
-                [ x (px 100)
-                , y (px 100)
-                , width (px 100)
-                , height (px 100)
-                , stroke (Paint Color.green)
-                , fill (Paint Color.green)
-                ]
-                []
-            , apple { x = 400, y = 150 }
+            [ snakePart { x = 1, y = 1 }
+            , appleShape apple
             ]
         ]
     }
 
 
-apple { x, y } =
+snakePart { x, y } =
+    rect
+        [ Attr.x (px (x * tileSize))
+        , Attr.y (px (y * tileSize))
+        , width (px tileSize)
+        , height (px tileSize)
+        , stroke (Paint Color.green)
+        , fill (Paint Color.green)
+        ]
+        []
+
+
+appleShape { x, y } =
     circle
-        [ cx (px x)
-        , cy (px y)
-        , r (px 50)
+        [ cx (px (x * tileSize + (tileSize / 2)))
+        , cy (px (y * tileSize + (tileSize / 2)))
+        , r (px (tileSize / 2))
         , stroke (Paint Color.red)
         , fill (Paint Color.red)
         ]
