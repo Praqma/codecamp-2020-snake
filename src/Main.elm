@@ -53,17 +53,21 @@ view model =
                 , fill (Paint Color.green)
                 ]
                 []
-            , circle
-                [ cx (px 400)
-                , cy (px 150)
-                , r (px 50)
-                , stroke (Paint Color.red)
-                , fill (Paint Color.red)
-                ]
-                []
+            , apple { x = 400, y = 150 }
             ]
         ]
     }
+
+
+apple { x, y } =
+    circle
+        [ cx (px x)
+        , cy (px y)
+        , r (px 50)
+        , stroke (Paint Color.red)
+        , fill (Paint Color.red)
+        ]
+        []
 
 
 update msg model =
