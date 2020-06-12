@@ -69,6 +69,10 @@ tileSize =
     100
 
 
+speedUp =
+    1000
+
+
 view { apple, snake } =
     { title = "Hello World!"
     , body =
@@ -130,11 +134,30 @@ update msg model =
         Left ->
             ( { model | direction = StateLeft }, Cmd.none )
 
+        Move ->
+            case model.direction of
+                StateUp ->
+                    case model.snake of
+                        [] ->
+                            ( model, Cmd.none )
+
+                        head :: tail ->
+                            ( { model | snake = tail }, Cmd.none )
+
+                StateDown ->
+                    ( model, Cmd.none )
+
+                StateLeft ->
+                    ( model, Cmd.none )
+
+                StateRight ->
+                    ( model, Cmd.none )
+
 
 subscriptions model =
     Sub.batch
         [ onKeyDown (keyDecoder keyToMessage)
-        , every 1000 (always Move)
+        , every speedUp (always Move)
         ]
 
 
@@ -142,6 +165,15 @@ keyToMessage string =
     case string of
         "ArrowUp" ->
             Up
+
+        "ArrowDown" ->
+            Down
+
+        "ArrowLeft" ->
+            Left
+
+        "ArrowRight" ->
+            Right
 
         _ ->
             Continue
