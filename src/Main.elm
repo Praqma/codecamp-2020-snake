@@ -47,9 +47,18 @@ view model =
             [ rect
                 [ x (px 100)
                 , y (px 100)
-                , width (px 200)
+                , width (px 100)
                 , height (px 100)
-                , stroke (Paint Color.blue)
+                , stroke (Paint Color.green)
+                , fill (Paint Color.green)
+                ]
+                []
+            , circle
+                [ cx (px 400)
+                , cy (px 150)
+                , r (px 50)
+                , stroke (Paint Color.red)
+                , fill (Paint Color.red)
                 ]
                 []
             ]
