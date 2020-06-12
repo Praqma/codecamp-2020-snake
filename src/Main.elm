@@ -3,7 +3,11 @@ module Main exposing (..)
 import Browser
 import GlobalCSS exposing (globalCSS)
 import Html.Attributes as HtmlAttributes
-import TypedSvg exposing (svg)
+import TypedSvg exposing (svg, line)
+import TypedSvg.Attributes exposing (x1, x2, y1,y2, fill)
+import TypedSvg.Types exposing (px, Paint(..))
+import String exposing (lines)
+import Color
 
 
 type alias Model =
@@ -40,7 +44,7 @@ view model =
                 "height"
                 "100vh"
             ]
-            []
+            [line [x1 (px 100), y1 (px 100), x2 (px 1000), y2 (px 1000), fill (Paint Color.blue) ] []]
         ]
     }
 
