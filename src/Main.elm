@@ -7,6 +7,7 @@ import GlobalCSS exposing (globalCSS)
 import Html.Attributes as HtmlAttributes
 import KeyInput exposing (keyDecoder)
 import String exposing (lines)
+import Time exposing (every)
 import TypedSvg exposing (..)
 import TypedSvg.Attributes as Attr exposing (..)
 import TypedSvg.Types exposing (Paint(..), px)
@@ -22,12 +23,24 @@ type alias Model =
             { x : Float
             , y : Float
             }
+    , direction : Direction
     }
+
+
+type Direction
+    = StateUp
+    | StateDown
+    | StateLeft
+    | StateRight
 
 
 type Msg
     = Up
+    | Down
+    | Right
+    | Left
     | Continue
+    | Move
 
 
 main =
@@ -46,6 +59,7 @@ init flags =
             [ { x = 1, y = 1 }
             , { x = 1, y = 2 }
             ]
+      , direction = StateRight
       }
     , Cmd.none
     )
@@ -98,11 +112,30 @@ appleShape { x, y } =
 
 
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        Continue ->
+            ( model, Cmd.none )
+
+        Up ->
+            ( { model | direction = StateUp }, Cmd.none )
+
+        Down ->
+            ( { model | direction = StateDown }, Cmd.none )
+
+        Right ->
+            ( { model | direction = StateRight }
+            , Cmd.none
+            )
+
+        Left ->
+            ( { model | direction = StateLeft }, Cmd.none )
 
 
 subscriptions model =
-    onKeyDown (keyDecoder keyToMessage)
+    Sub.batch
+        [ onKeyDown (keyDecoder keyToMessage)
+        , every 1000 (always Move)
+        ]
 
 
 keyToMessage string =
