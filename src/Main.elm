@@ -1,7 +1,9 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (..)
+import GlobalCSS exposing (globalCSS)
+import Html.Attributes as HtmlAttributes
+import TypedSvg exposing (svg)
 
 
 type alias Model =
@@ -28,7 +30,18 @@ init flags =
 
 view model =
     { title = "Hello World!"
-    , body = [ text "Hello World!" ]
+    , body =
+        [ globalCSS
+        , svg
+            [ HtmlAttributes.style
+                "width"
+                "100vw"
+            , HtmlAttributes.style
+                "height"
+                "100vh"
+            ]
+            []
+        ]
     }
 
 
