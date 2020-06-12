@@ -1,9 +1,11 @@
 module Main exposing (..)
 
 import Browser exposing (Document)
+import Browser.Events exposing (onKeyDown)
 import Color
 import GlobalCSS exposing (globalCSS)
 import Html.Attributes as HtmlAttributes
+import KeyInput exposing (keyDecoder)
 import String exposing (lines)
 import TypedSvg exposing (..)
 import TypedSvg.Attributes as Attr exposing (..)
@@ -15,11 +17,17 @@ type alias Model =
         { x : Float
         , y : Float
         }
+    , snake :
+        List
+            { x : Float
+            , y : Float
+            }
     }
 
 
-type alias Msg =
-    Never
+type Msg
+    = Up
+    | Continue
 
 
 main =
@@ -33,7 +41,12 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init flags =
-    ( { apple = { x = 4, y = 1 } }
+    ( { apple = { x = 4, y = 1 }
+      , snake =
+            [ { x = 1, y = 1 }
+            , { x = 1, y = 2 }
+            ]
+      }
     , Cmd.none
     )
 
@@ -42,7 +55,7 @@ tileSize =
     100
 
 
-view { apple } =
+view { apple, snake } =
     { title = "Hello World!"
     , body =
         [ globalCSS
@@ -54,9 +67,9 @@ view { apple } =
                 "height"
                 "100vh"
             ]
-            [ snakePart { x = 1, y = 1 }
-            , appleShape apple
-            ]
+            (List.map snakePart snake
+                ++ [ appleShape apple ]
+            )
         ]
     }
 
@@ -89,4 +102,13 @@ update msg model =
 
 
 subscriptions model =
-    Sub.none
+    onKeyDown (keyDecoder keyToMessage)
+
+
+keyToMessage string =
+    case string of
+        "ArrowUp" ->
+            Up
+
+        _ ->
+            Continue
