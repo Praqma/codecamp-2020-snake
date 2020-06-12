@@ -116,42 +116,47 @@ appleShape { x, y } =
 
 
 update msg model =
-    case msg of
-        Continue ->
-            ( model, Cmd.none )
+    (case (msg, model.direction) of
+        (Continue, _) ->
+            model
 
-        Up ->
-            ( { model | direction = StateUp }, Cmd.none )
+        (Up, StateDown) ->
+                model
+        (Down, StateUp) ->
+                model
+        (Left, StateRight) ->
+                model
+        (Right, StateLeft) ->
+                model
+        (Up, _) ->
+               { model | direction = StateUp }
 
-        Down ->
-            ( { model | direction = StateDown }, Cmd.none )
+        (Down, _) ->
+            { model | direction = StateDown }
 
-        Right ->
-            ( { model | direction = StateRight }
-            , Cmd.none
-            )
+        (Right, _) ->
+            { model | direction = StateRight }
 
-        Left ->
-            ( { model | direction = StateLeft }, Cmd.none )
+        (Left, _) ->
+           { model | direction = StateLeft }
 
-        Move ->
-            case model.direction of
-                StateUp ->
+        (Move, StateUp) ->
                     case model.snake of
                         [] ->
-                            ( model, Cmd.none )
+                            model
 
                         head :: tail ->
-                            ( { model | snake = tail }, Cmd.none )
+                            { model | snake = tail }
 
-                StateDown ->
-                    ( model, Cmd.none )
+        (Move, StateDown) ->
+            model
 
-                StateLeft ->
-                    ( model, Cmd.none )
+        (Move, StateLeft) ->
+            model
 
-                StateRight ->
-                    ( model, Cmd.none )
+        (Move, StateRight) ->
+            model
+        , Cmd.none)
 
 
 subscriptions model =
